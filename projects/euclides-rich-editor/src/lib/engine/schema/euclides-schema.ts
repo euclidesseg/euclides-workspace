@@ -1,7 +1,7 @@
 import { NodeSpec, Schema } from 'prosemirror-model';
 import { schema as basicSchema, schema } from 'prosemirror-schema-basic';
 import { addListNodes } from 'prosemirror-schema-list';
-import type {Node} from 'prosemirror-model'
+import type {MarkSpec, Node} from 'prosemirror-model'
 
 
 // El schema es el diccionario + reglas gramaticales del editor.
@@ -28,11 +28,23 @@ const paragraph:NodeSpec = {
     ]
   }
 }
+
+// creamos el mark strike (tachado)
+const strike:MarkSpec = {
+  parseDOM: [
+    { tag: "s" },
+    { tag: "del" },
+    { style: "text-decoration=line-through" }
+  ],
+  toDOM() {
+    return ["s", 0];
+  }
+};
 const nodes = basicSchema.spec.nodes.update("paragraph", paragraph);
 
 export const EuclidesEditorSchema = new Schema({
   nodes: addListNodes(nodes, "paragraph*", "block"),
-  marks: basicSchema.spec.marks,
+  marks: basicSchema.spec.marks.addToEnd("strike", strike),
 });
 
 /* 

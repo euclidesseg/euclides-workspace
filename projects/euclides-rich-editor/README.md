@@ -1,150 +1,162 @@
+# 🧠 Arquitectura del Editor con ProseMirror
 
+## 🔹 Componentes principales
 
+- **EditorState** → Guarda TODO el estado del editor (documento, selección, plugins).
+- **EditorView** → Es el editor visual que se renderiza en el DOM.
+- **Schema** → Define qué tipos de nodos y marcas existen (párrafo, heading, bold, etc.).
+- **DOMParser** → Convierte HTML → documento interno de ProseMirror.
+- **prosemirror-schema-basic** → Esquema base (párrafos, headings, bold, italic…).
+- **addListNodes** → Agrega listas (`ul`, `ol`, `li`) al schema.
+- **exampleSetup** → Instala plugins de demo (menú, teclas, history, atajos, etc.).
 
-// EditorState → Guarda TODO el estado del editor (documento, selección, plugins)
-// EditorView → Es el editor visual que se renderiza en el DOM
-// Schema → Define qué tipos de nodos y marcas existen (párrafo, heading, bold, etc.)
-// DOMParser → Convierte HTML → documento interno de ProseMirror
-// schema-basic → Esquema base (párrafos, headings, bold, italic…)
-// addListNodes → Agrega listas (ul, ol, li) al schema
-// exampleSetup → Instala plugins de DEMO (menú, teclas, history, atajos, etc.)
+---
 
-
-/*
-EL SCHEMA ES EL "DICCIONARIO" DEL EDITOR 📚
+# 📚 El Schema es el "Diccionario" del Editor
 
 Aquí se define el lenguaje que el editor entiende.
 
 Dentro del schema existen dos cosas principales:
 
-1️⃣ NODES (nodos) → Son los BLOQUES o estructuras del documento
-2️⃣ MARKS (marcas) → Son formatos que se aplican al TEXTO dentro de un bloque
+1. **NODES (nodos)** → Son los BLOQUES o estructuras del documento.
+2. **MARKS (marcas)** → Son formatos que se aplican al TEXTO dentro de un bloque.
 
+---
 
-━━━━━━━━━━━━━━━━━━
-🧱 NODES = MODIFICAN BLOQUES COMPLETOS
-━━━━━━━━━━━━━━━━━━
+## 🧱 NODES = Modifican bloques completos
 
 Un nodo es como una "caja" que contiene texto u otros nodos.
 
-Ejemplos de bloques:
-<p>      párrafo
-<h1>     título
-<ul>     lista
-<li>     elemento de lista
-<blockquote> cita
-<pre>    code block
+### 📌 Ejemplos de bloques
+
+| HTML | Tipo |
+|------|------|
+| `<p>` | párrafo |
+| `<h1>` | título |
+| `<ul>` | lista |
+| `<li>` | elemento de lista |
+| `<blockquote>` | cita |
+| `<pre>` | code block |
 
 Si quieres modificar TODO el bloque, se hace como atributo del nodo.
 
 Ejemplo:
-Alineación, fondo, margen, sangría, etc.
 
+```html
 <p style="text-align:center">Hola mundo</p>
+```
 
 Eso vive en:
-nodes → paragraph.attrs
 
+`nodes → paragraph.attrs`
 
-━━━━━━━━━━━━━━━━━━
-✏️ MARKS = MODIFICAN TEXTO DENTRO DEL BLOQUE
-━━━━━━━━━━━━━━━━━━
+---
 
-Las marks NO cambian la estructura,
-solo envuelven partes del texto.
+## ✏️ MARKS = Modifican texto dentro del bloque
+
+Las marks NO cambian la estructura.  
+Solo envuelven partes del texto.
 
 Ejemplo:
 
+```html
 <p>Hola <s>mundo</s></p>
+```
 
-Aquí el bloque es el párrafo,
-pero "mundo" tiene una MARK.
+Aquí el bloque es el párrafo,  
+pero `"mundo"` tiene una MARK.
 
-Ejemplos de marks:
-<strong>   bold
-<em>       italic
-<a>        link
-<code>     code inline
-<s>        strike (NO viene por defecto)
+### 📌 Ejemplos de marks
+
+| HTML | Tipo |
+|------|------|
+| `<strong>` | bold |
+| `<em>` | italic |
+| `<a>` | link |
+| `<code>` | inline code |
+| `<s>` | strike (NO viene por defecto) |
 
 Eso vive en:
-marks → schema.spec.marks
 
+`marks → schema.spec.marks`
 
-━━━━━━━━━━━━━━━━━━
-📦 LO QUE TRAE prosemirror-schema-basic
-━━━━━━━━━━━━━━━━━━
+---
 
-NODES incluidos:
-✔ doc
-✔ paragraph <p>
-✔ heading <h1-h6>
-✔ blockquote
-✔ horizontal_rule <hr>
-✔ code_block <pre>
-✔ image
-✔ hard_break <br>
-✔ text
+# 📦 Lo que trae prosemirror-schema-basic
 
-MARKS incluidos:
-✔ strong (bold)
-✔ em (italic)
-✔ link
-✔ code (inline code)
+## 🧱 NODES incluidos
 
-━━━━━━━━━━━━━━━━━━
-🚫 COSAS QUE NO VIENEN Y DEBES AGREGAR TÚ
-━━━━━━━━━━━━━━━━━━
+- ✅ `doc`
+- ✅ `paragraph`
+- ✅ `heading` (h1–h6)
+- ✅ `blockquote`
+- ✅ `horizontal_rule`
+- ✅ `code_block`
+- ✅ `image`
+- ✅ `hard_break`
+- ✅ `text`
 
-🎨 MARKS (modifican TEXTO dentro de un bloque)
+## ✏️ MARKS incluidos
 
-❌ strike / tachado → <s>texto</s>
-❌ underline / subrayado → <u>texto</u>
-❌ color de texto → letras rojas, azules, etc.
-❌ background / highlight → fondo de palabras
-❌ fontSize → tamaño de letra
-❌ fontFamily → tipo de fuente
+- ✅ `strong` (bold)
+- ✅ `em` (italic)
+- ✅ `link`
+- ✅ `code` (inline code)
 
+---
 
-🧱 NODES (modifican BLOQUES o crean estructura)
+# 🚫 Cosas que NO vienen y debes agregar tú
 
-❌ textAlign → alineación del párrafo (izq, centro, der)
-❌ tablas → table, row, cell, header
-❌ video embed → <iframe>, <video>
-❌ menciones (@usuario) → nodo inline especial
-❌ custom blocks → warning, info, success, quote box
-❌ cards / embeds → previews de links tipo Notion
-❌ columnas / layouts → bloques en columnas
-❌ checklist → lista con checkboxes
+## 🎨 MARKS (modifican TEXTO dentro de un bloque)
 
-━━━━━━━━━━━━━━━━━━
-Regla de oro:
-Si modifica letras → MARK
-Si modifica estructura → NODE
-━━━━━━━━━━━━━━━━━━
+- ❌ strike / tachado → `<s>texto</s>`
+- ❌ underline / subrayado → `<u>texto</u>`
+- ❌ color de texto → letras rojas, azules, etc.
+- ❌ background / highlight → fondo de palabras
+- ❌ fontSize → tamaño de letra
+- ❌ fontFamily → tipo de fuente
 
+---
 
-/*
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🧠 CÓMO AGREGAR COSAS NUEVAS AL EDITOR
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## 🧱 NODES (modifican BLOQUES o crean estructura)
 
-El schema es el "diccionario" del editor.
+- ❌ textAlign → alineación del párrafo (izq, centro, der)
+- ❌ tablas → `table`, `row`, `cell`, `header`
+- ❌ video embed → `<iframe>`, `<video>`
+- ❌ menciones (@usuario) → nodo inline especial
+- ❌ custom blocks → warning, info, success, quote box
+- ❌ cards / embeds → previews tipo Notion
+- ❌ columnas / layouts
+- ❌ checklist
+
+---
+
+## 🧠 Regla de oro
+
+> Si modifica letras → **MARK**  
+> Si modifica estructura → **NODE**
+
+---
+
+# 🧠 Cómo agregar cosas nuevas al editor
+
+El schema es el "diccionario" del editor.  
 Dentro de él definimos:
 
-• nodes  → estructuras y bloques
-• marks  → estilos que afectan texto dentro de un bloque
+- `nodes` → estructuras y bloques
+- `marks` → estilos que afectan texto dentro de un bloque
 
+---
 
-━━━━━━━━━━━━━━━━━━
-🎨 AGREGAR UN MARK (estilo de texto)
-━━━━━━━━━━━━━━━━━━
+## 🎨 Agregar un MARK
+
 Los MARKS modifican palabras o partes del texto.
 
-Ejemplos:
-bold, italic, strike, color, background, underline
+Ejemplos: bold, italic, strike, color, background, underline
 
-1️⃣ Definir el mark
+### 1️⃣ Definir el mark
+
+```ts
 const strike = {
   parseDOM: [
     { tag: "s" },
@@ -153,37 +165,53 @@ const strike = {
   ],
   toDOM() { return ["s", 0]; }
 };
+```
 
-2️⃣ Agregarlo al schema
+### 2️⃣ Agregarlo al schema
+
+```ts
 marks: schema.spec.marks.addToEnd("strike", strike)
+```
 
-3️⃣ Usarlo
+### 3️⃣ Usarlo
+
+```ts
 toggleMark(mySchema.marks.strike)(view.state, view.dispatch);
+```
 
+---
 
-━━━━━━━━━━━━━━━━━━
-🧱 AGREGAR UN NODE (bloque o estructura)
-━━━━━━━━━━━━━━━━━━
+## 🧱 Agregar un NODE
+
 Los NODES crean bloques completos o nuevas estructuras.
 
-Ejemplos:
-párrafos, headings, tablas, videos, bloques info, menciones
+Ejemplos: párrafos, headings, tablas, videos, bloques info, menciones
 
-1️⃣ Definir el node
+### 1️⃣ Definir el node
+
+```ts
 const warningBlock = {
   group: "block",
   content: "inline*",
   parseDOM: [{ tag: "div.warning" }],
   toDOM() { return ["div", { class: "warning" }, 0]; }
 };
+```
 
-2️⃣ Agregarlo
+### 2️⃣ Agregarlo
+
+```ts
 let nodes = schema.spec.nodes.addToEnd("warning_block", warningBlock);
+```
 
-3️⃣ Crear el schema
+### 3️⃣ Crear el schema
+
+```ts
 new Schema({ nodes, marks })
+```
 
-4️⃣ Usarlo
+### 4️⃣ Usarlo
+
+```ts
 setBlockType(mySchema.nodes.warning_block)(view.state, view.dispatch);
-
-*/
+```

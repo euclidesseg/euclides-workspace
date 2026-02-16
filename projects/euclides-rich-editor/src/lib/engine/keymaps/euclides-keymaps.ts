@@ -21,7 +21,7 @@ export function buildEuclidesKeymap(schema:Schema):Plugin{
     })
 } 
 
-// insertar comando un salto de linea 
+// insertar comando un salto de linea para listas
 const cmd = (state:EditorState, dispatch?:(tr:Transaction) => void) => {
   const brType = state.schema.nodes["hard_break"];
   if (!brType) return false;

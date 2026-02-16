@@ -51,7 +51,8 @@
               }
             ],
             "styles": [
-              "projects/euclides-demo/src/styles.css"
+              "projects/euclides-demo/src/styles.css",
+               "projects/euclides-rich-editor/src/lib/styles/euclides-editor.css"
             ]
           },
           "configurations": {

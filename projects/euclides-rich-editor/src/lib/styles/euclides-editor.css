@@ -1,0 +1,164 @@
+
+
+:root {
+    --color-brand-blue: #244ef7;
+    --color-brand-lime: #d5ee3c;
+}
+
+body {
+    padding: 1.5rem;
+    background-color: rgb(241 245 249);
+    ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contend-editor {
+    width: 800px;
+    height: 600px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.euclides-editor-nav button {
+    border: none;
+}
+
+#editor {
+    height: 100%;
+    overflow-y: auto;
+}
+
+#editor::-webkit-scrollbar {
+    width: 8px;
+    /* Tamaño del scroll en vertical */
+    height: 8px;
+    /* Tamaño del scroll en horizontal */
+    display: block;
+    /* Ocultar scroll */
+}
+
+/* Ponemos un color de fondo y redondeamos las esquinas del thumb */
+#editor::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--color-brand-lime) 70%, transparent);
+    border-radius: 4px;
+}
+
+/* Cambiamos el fondo y agregamos una sombra cuando esté en hover */
+#editor::-webkit-scrollbar-thumb:hover {
+    background: var(--color-brand-lime);
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+#editor::-webkit-scrollbar-track {
+    background: color-mix(in oklab, var(--color-brand-lime) 40%, transparent);
+    border-radius: 4px;
+}
+
+/* Cambiamos el fondo cuando esté en active o hover */
+#editor::-webkit-scrollbar-track:hover,
+#editor::-webkit-scrollbar-track:active {
+    background: color-mix(in oklab, var(--color-brand-lime) 30%, transparent);
+}
+
+
+#editor::-webkit-scrollbar-track {
+    background: color-mix(in oklab, var(--color-brand-lime) 20%, transparent);
+    border-radius: 4px;
+}
+
+
+#editor div[contenteditable="true"] {
+    height: 100%;
+    padding: .5rem;
+}
+
+#editor div[contenteditable="true"]:focus-visible {
+    outline: none;
+}
+
+.btnHeading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.euclides-editor-nav {
+    display: flex;
+    align-items: center;
+    gap: .2rem;
+    padding: .3rem;
+    border-bottom: 1px solid var(--color-brand-lime);
+    padding: .2rem .4rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
+}
+
+.euclides-editor-nav button {
+    padding: .4rem;
+    border-radius: 6px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.euclides-editor-nav button:hover {
+    background-color: color-mix(in oklab, var(--color-brand-lime) 40%, transparent);
+}
+
+.texto-strike {
+    text-decoration: line-through;
+    font-weight: bold;
+}
+
+.euclides-editor.ProseMirror {
+    width: 82%;
+    margin: 0 auto;
+}
+
+.euclides-editor.ProseMirror pre {
+    background-color: color-mix(in oklab, var(--color-brand-blue) 5%, transparent);
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border-radius: .5rem;
+    border: 1px solid color-mix(in oklab, var(--color-brand-blue) 10%, transparent);
+}
+
+.euclides-editor h1 {
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+.euclides-editor.ProseMirror pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+#heading-container {
+    position: relative;
+    width: auto;
+    min-width: 35px;
+    z-index: 10;
+}
+
+#heading-options {
+    position: absolute;
+    top: 2.5rem;
+    width: auto;
+    MAX-width: 3rem;
+    left: 0;
+    padding: .5rem;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+    border-radius: .5rem;
+    flex-direction: column;
+    z-index: 20;
+}
