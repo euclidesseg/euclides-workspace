@@ -5,8 +5,8 @@ import type {MarkSpec, Node} from 'prosemirror-model'
 
 
 // El schema es el diccionario + reglas gramaticales del editor.
-// le dicen al editor que existe, y que html representan
-// este contiene nodes y marks
+// el shcema define que nodos existen (paragraph, heading, list, code_block, etc.)
+// Qué marcas existen (bold, italic, link, etc.)
 const paragraph:NodeSpec = {
   ...schema.spec.nodes.get('paragraph'),
   attrs:{
@@ -46,8 +46,3 @@ export const EuclidesEditorSchema = new Schema({
   nodes: addListNodes(nodes, "paragraph*", "block"),
   marks: basicSchema.spec.marks.addToEnd("strike", strike),
 });
-
-/* 
-  * Este editor entiende exactamente lo mismo que prosemirror-schema-basic,
-  * pero ahora ese conocimiento es MÍO y lo puedo extender.
-*/

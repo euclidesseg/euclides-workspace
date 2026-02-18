@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
-import {EuclidesEditorComponent} from "euclides-rich-editor";
+import {EuclidesRichEditorComponent} from "euclides-rich-editor";
 
 @Component({
   selector: 'app-root',
-  imports: [EuclidesEditorComponent],
+  imports: [EuclidesRichEditorComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

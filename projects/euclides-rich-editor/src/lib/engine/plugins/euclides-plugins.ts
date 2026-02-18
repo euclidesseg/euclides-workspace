@@ -7,29 +7,26 @@ import { EditorStateService } from '../../core/editor-state.service';
 import { buildHistoryStatePlugin } from './history-buttons.plugin';
 
 /*
-  Un plugin es una pieza que le agrega comportamiento al editor.
-  El schema define qué existe (nodos, marcas).
-  Los plugins definen qué pasa (atajos, historial, reglas, reacciones).
+  Los plugins extienden el comportamiento del editor:
+
+  Lógica personalizada
 
   Un plugin puede encargarse de cosas como:
 
-  ⌨️ Atajos de teclado (keymap)
+  Atajos de teclado (keymap)
 
-  ↩️ Deshacer / rehacer (history)
+  Deshacer / rehacer (history)
 
-  ✍️ Reglas al escribir (inputRules)
+  Reglas al escribir (inputRules)
 
-  👀 Reaccionar a cambios del editor
+  Reaccionar a cambios del editor
 
-  🎯 Cambiar el estado según lo que haces
+  Cambiar el estado según lo que haces
+    
+  Sincronización con el EditorStateService (Angular)
+
 */
 
-/*
-  Este plugin NO modifica el documento ni el estado del editor.
-  Su única responsabilidad es sincronizar la interfaz (UI) con el estado actual del editor.
-  - Si no hay nada que deshacer, deshabilita el botón Undo.
-  - Si no hay nada que rehacer, deshabilita el botón Redo.
-*/
 
 export function buildPlugins(stateService: EditorStateService){
   return [

@@ -1,6 +1,6 @@
 import { toggleMark , setBlockType} from "prosemirror-commands";
 import { keymap } from "prosemirror-keymap";
-import { history, undo, redo, undoDepth,redoDepth } from "prosemirror-history";
+import { undo, redo } from "prosemirror-history";
 import {splitListItem} from 'prosemirror-schema-list'
 import { Schema } from "prosemirror-model";
 import { EditorState, Plugin, Transaction } from "prosemirror-state";
@@ -30,4 +30,3 @@ const cmd = (state:EditorState, dispatch?:(tr:Transaction) => void) => {
   }
   return true;
 };  
-// TODO para agregar a git se ha definido el keymap.
