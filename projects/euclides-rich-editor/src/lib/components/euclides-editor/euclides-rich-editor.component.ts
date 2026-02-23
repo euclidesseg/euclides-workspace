@@ -33,17 +33,34 @@ export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
   }
 
   toggleBold(){
-    if(this.editorCommandsService.toggleBold(this.view))
+    if(this.editorCommandsService.toggleBold(this.view)){
+
       this.view.focus();
+    }
+  }
+  toggleItalic(){
+    if(this.editorCommandsService.toggleItailc(this.view)){
+      this.view.focus() 
+    }
   }
 
+  toggleAlign(align:string){
+    if(this.editorCommandsService.setTextAlign(align, this.view))
+      this.view.focus()
+  }
+
+  toggleCodeBlock(){
+    if(this.editorCommandsService.toggleCodeBlock(this.view))
+    this.view.focus()
+  }
   ngOnDestroy():void{
     this.view.destroy();
   }
 }
  
-// TODO profundizar en el euclides-schema
-// TODO agrgar comportamientos
+// TODO profundizar en el euclides-schema //in progress
+// TODO agrgar comportamientos // in progress
 // TODO separar nav y editor en componentes separados
 // TODO Entender cómo funcionan las InputRules en ProseMirror y agregarlas a los plugins
 // TODO comprender la abstraccion de prosemirror
+// TODO Blockquote avanzado Un bloque tipo cita con atributo author

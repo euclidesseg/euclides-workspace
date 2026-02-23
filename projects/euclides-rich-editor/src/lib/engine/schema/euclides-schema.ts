@@ -8,18 +8,22 @@ import type {MarkSpec, Node} from 'prosemirror-model'
 // el shcema define que nodos existen (paragraph, heading, list, code_block, etc.)
 // Qué marcas existen (bold, italic, link, etc.)
 const paragraph:NodeSpec = {
-  ...schema.spec.nodes.get('paragraph'),
+  ...schema.spec.nodes.get('paragraph'),// tomamos configuracion original del node paragraph
   attrs:{
+      // Agregamos un nuevo atributo llamado textAlign
     textAlign:{default:'left'}
   },
+  //Convierte HTML en documento prosemirror
   parseDOM:[
     {
+      // Esta regla se activa cuando encuentra un <p> en el DOM
       tag:"p",
       getAttrs:(dom:HTMLElement) => ({
         textAlign:dom.style.textAlign || "left"
       })
     }
   ],
+  // convierte documento procemirror en HTML
   toDOM(node:Node){
     return[
       "p",
