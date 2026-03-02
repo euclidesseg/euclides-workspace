@@ -1,21 +1,16 @@
-
-
 :root {
     --color-brand-blue: #244ef7;
     --color-brand-lime: #d5ee3c;
 }
 
 body {
-    padding: 1.5rem;
     background-color: rgb(241 245 249);
-    ;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .contend-editor {
-    width: 800px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
     height: 600px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
     border-radius: 12px;
@@ -24,6 +19,7 @@ body {
     flex-direction: column;
     overflow: hidden;
     position: relative;
+    z-index: 10
 }
 
 .euclides-editor-nav button {
@@ -91,8 +87,6 @@ body {
 }
 
 .euclides-editor-nav {
-    display: flex;
-    align-items: center;
     gap: .2rem;
     padding: .3rem;
     border-bottom: 1px solid var(--color-brand-lime);
@@ -101,6 +95,15 @@ body {
     top: 0;
     z-index: 10;
     background-color: white;
+}
+
+.buttons__container {
+    display: flex;
+    overflow-x: auto;
+}
+
+.buttons__container::-webkit-scrollbar {
+    display: none;
 }
 
 .euclides-editor-nav button {
@@ -161,4 +164,58 @@ body {
     border-radius: .5rem;
     flex-direction: column;
     z-index: 20;
+}
+
+.popover {
+    position: absolute;
+    top: 45px;
+    max-height: 40px;
+    left: 5px;
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.popover input {
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    width: 200px;
+    outline: none;
+}
+
+.actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: slategray;
+}
+
+.actions button:hover {
+    color: black;
+}
+
+@media (width < 520px) {
+    .euclides-editor-nav {
+        order: 1;
+        overflow-x: auto;
+        position: static;
+        overflow-y: hidden;
+
+
+    }
+
+    .euclides-editor.ProseMirror {
+        height: 100dvh;
+    }
+
+    .popover {
+        top: auto;
+        bottom: 40px;
+        z-index: 99;
+    }
 }

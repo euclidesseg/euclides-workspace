@@ -47,6 +47,6 @@ const strike:MarkSpec = {
 const nodes = basicSchema.spec.nodes.update("paragraph", paragraph);
 
 export const EuclidesEditorSchema = new Schema({
-  nodes: addListNodes(nodes, "paragraph*", "block"),
+  nodes: addListNodes(nodes, "paragraph block*", "block"),
   marks: basicSchema.spec.marks.addToEnd("strike", strike),
 });

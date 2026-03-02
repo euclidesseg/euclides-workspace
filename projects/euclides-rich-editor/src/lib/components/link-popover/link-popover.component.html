@@ -1,0 +1,22 @@
+@if (visible()) {
+<div class="popover">
+    <input type="text" [value]="url()" #inputElement (input)="url.set(inputElement.value)"
+        placeholder="Paste a link..." />
+
+    <div class="actions">
+        <button (click)="onConfirm()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="m8.864 16.617l-5.303-5.303l-1.061 1.06l5.657 5.657a1 1 0 0 0 1.414 0L21.238 6.364l-1.06-1.06L8.864 16.616z"/>
+            </svg>
+        </button>
+        <button (click)="cancel.emit()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><path id="SVG0kegTdID" fill="currentColor" d="M8 6.943L1.807.75L.75 1.807L6.943 8L.75 14.193l1.057 1.057L8 9.057l6.193 6.193l1.057-1.057L9.057 8l6.193-6.193L14.193.75z"/></defs><use fill-rule="evenodd" href="#SVG0kegTdID" transform="translate(4 4)"/>
+            </svg>
+        </button>
+        <button (click)="remove.emit()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="currentColor" fill-rule="evenodd" d="m6.774 6.4l.812 13.648a.8.8 0 0 0 .798.752h7.232a.8.8 0 0 0 .798-.752L17.226 6.4zm11.655 0l-.817 13.719A2 2 0 0 1 15.616 22H8.384a2 2 0 0 1-1.996-1.881L5.571 6.4H3.5v-.7a.5.5 0 0 1 .5-.5h16a.5.5 0 0 1 .5.5v.7zM14 3a.5.5 0 0 1 .5.5v.7h-5v-.7A.5.5 0 0 1 10 3zM9.5 9h1.2l.5 9H10zm3.8 0h1.2l-.5 9h-1.2z"/>
+            </svg>
+        </button>
+    </div>
+</div>
+}

@@ -28,11 +28,11 @@ import { buildHistoryStatePlugin } from './history-buttons.plugin';
 */
 
 
-export function buildPlugins(stateService: EditorStateService){
+export function buildPlugins(stateService: EditorStateService) {
   return [
+    buildEuclidesKeymap(EuclidesEditorSchema), // 👈 PRIMERO
+    keymap(baseKeymap),                        // 👈 DESPUÉS
     history(),
-    keymap(baseKeymap),
-    buildEuclidesKeymap(EuclidesEditorSchema),
     buildHistoryStatePlugin(stateService),
   ];
 }

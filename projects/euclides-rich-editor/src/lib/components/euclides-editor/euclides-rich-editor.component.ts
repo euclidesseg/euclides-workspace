@@ -4,12 +4,18 @@ import { EditorView } from 'prosemirror-view';
 import { EditorCommandsService } from '../../core/editor-commands.service';
 import { EditorEngine } from '../../engine/editor-engine';
 import { EditorStateService } from '../../core/editor-state.service';
+import { list } from '../../core/types/list.type';
+import { redo, undo } from 'prosemirror-history';
+import { getLinkRange } from '../../core/utils/get-link-range';
+import { LinkPopoverComponent } from "../link-popover/link-popover.component";
+import { EuclidesEditorSchema } from '../../engine/schema/euclides-schema';
 
 
 @Component({
   selector: 'euclides-rich-editor',
   standalone: true,
   templateUrl: './euclides-editor.component.html',
+  imports: [LinkPopoverComponent],
 })
 export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
 
@@ -32,34 +38,128 @@ export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
     this.view = EditorEngine.create(this.editorRef.nativeElement, this.editorStateService)
   }
 
-  toggleBold(){
-    if(this.editorCommandsService.toggleBold(this.view)){
+  toggleBold() {
+    if (this.editorCommandsService.toggleBold(this.view)) {
 
       this.view.focus();
     }
   }
-  toggleItalic(){
-    if(this.editorCommandsService.toggleItailc(this.view)){
-      this.view.focus() 
+  toggleItalic() {
+    if (this.editorCommandsService.toggleItailc(this.view)) {
+      this.view.focus()
     }
   }
 
-  toggleAlign(align:string){
-    if(this.editorCommandsService.setTextAlign(align, this.view))
+  toggleAlign(align: string) {
+    if (this.editorCommandsService.setTextAlign(align, this.view))
       this.view.focus()
   }
 
-  toggleCodeBlock(){
-    if(this.editorCommandsService.toggleCodeBlock(this.view))
-    this.view.focus()
+  toggleCodeBlock() {
+    if (this.editorCommandsService.toggleCodeBlock(this.view))
+      this.view.focus()
   }
-  ngOnDestroy():void{
+  toggleStrike() {
+    if (this.editorCommandsService.toggleStrike(this.view))
+      this.view.focus()
+  }
+  toggleList(type: list) {
+    console.log(EuclidesEditorSchema.nodes)
+    if (this.editorCommandsService.toggleList(type, this.view))
+      this.view.focus();
+  }
+
+  undo() {
+    if (undo(this.view.state, this.view.dispatch))
+      this.view.focus();
+  }
+
+  redo() {
+    if (redo(this.view.state, this.view.dispatch))
+      this.view.focus();
+  }
+
+  showLinkPopover:boolean = false;
+  currentLink:string = '';
+
+  openLinkPopover() {
+    const { state } = this.view;
+
+    const linkInfo = getLinkRange(state);
+    this.currentLink = linkInfo?.link.attrs['href'] ?? '';
+    this.showLinkPopover = true;
+  }
+
+  closePopover() {
+    this.showLinkPopover = false;
+  }
+
+  applyLink(url: string) {
+    const { state, dispatch } = this.view;
+
+    const linkInfo = getLinkRange(state);
+
+    const href = url.startsWith('http')
+      ? url
+      : 'https://' + url;
+
+    if (linkInfo) {
+      const { start, end, link } = linkInfo;
+
+      dispatch(
+        state.tr
+          .removeMark(start, end, state.schema.marks['link'])
+          .addMark(
+            start,
+            end,
+            state.schema.marks['link'].create({
+              href,
+              title: link.attrs['title']
+            })
+          )
+      );
+    } else {
+      const from = state.selection.from;
+
+      const tr = state.tr.insertText(href, from);
+      tr.addMark(
+        from,
+        from + href.length,
+        state.schema.marks['link'].create({ href, title: href })
+      );
+
+      dispatch(tr);
+    }
+
+    this.view.focus();
+    this.closePopover();
+  }
+
+  removeLink() {
+    const { state, dispatch } = this.view;
+    const linkInfo = getLinkRange(state);
+
+    if (!linkInfo) return;
+
+    dispatch(
+      state.tr.removeMark(
+        linkInfo.start,
+        linkInfo.end,
+        state.schema.marks['link']
+      )
+    );
+
+    this.closePopover();
+  }
+
+  ngOnDestroy(): void {
     this.view.destroy();
   }
 }
- 
+
 // TODO profundizar en el euclides-schema //in progress
 // TODO agrgar comportamientos // in progress
+// TODO agregar enter de listas 
 // TODO separar nav y editor en componentes separados
 // TODO Entender cómo funcionan las InputRules en ProseMirror y agregarlas a los plugins
 // TODO comprender la abstraccion de prosemirror
