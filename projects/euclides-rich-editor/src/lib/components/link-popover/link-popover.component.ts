@@ -2,11 +2,7 @@ import { Component, input, output, signal, effect } from '@angular/core';
 
 @Component({
   selector: 'app-link-popover',
-  standalone: true,
   templateUrl: './link-popover.component.html',
-  styles: [`
-   
-  `]
 })
 export class LinkPopoverComponent {
 
@@ -17,7 +13,7 @@ export class LinkPopoverComponent {
   cancel = output<void>();
   remove = output<void>();
 
-  url = signal<string>('');
+  url = signal<string>('google');
 
   constructor() {
     effect(() => {

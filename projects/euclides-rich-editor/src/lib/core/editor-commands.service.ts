@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { EditorView } from "prosemirror-view";
-import OrderedMap from "orderedmap";
-import { MarkSpec, NodeSpec, Schema } from "prosemirror-model";
 
 import { setBlockType, toggleMark } from "prosemirror-commands";
 import { EuclidesEditorSchema } from "../engine/schema/euclides-schema";
-import { CommandsMethods } from "../engine/commanmethods/command.methods";
 import { Command } from "prosemirror-state";
 import { list } from "./types/list.type";
+import { switchList } from "../engine/commanmethods/lists/switch-list.comand";
+import { turnIntoCodeBlock } from "../engine/commanmethods/blocks/code-block.command";
+
 @Injectable(
     { providedIn: 'root' },
 )
@@ -35,7 +35,7 @@ export class EditorCommandsService {
     }
 
     toggleCodeBlock(view: EditorView): boolean {
-        return CommandsMethods.turnIntoCodeBlock(EuclidesEditorSchema)(view.state, view.dispatch);
+        return turnIntoCodeBlock(EuclidesEditorSchema)(view.state, view.dispatch);
     }
     
     toggleStrike(view: EditorView):boolean {
@@ -44,7 +44,7 @@ export class EditorCommandsService {
     }
 
     toggleList(type: list, view: EditorView): boolean {
-       return CommandsMethods.switchList(EuclidesEditorSchema.nodes[type])(view.state, view.dispatch);
+       return switchList(EuclidesEditorSchema.nodes[type])(view.state, view.dispatch);
     }
 
 }

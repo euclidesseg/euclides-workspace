@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, OnDestroy, viewChild, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, signal, viewChild, ViewChild, ViewEncapsulation } from '@angular/core';
 import { EditorView } from 'prosemirror-view';
 
 import { EditorCommandsService } from '../../core/editor-commands.service';
@@ -9,6 +9,8 @@ import { redo, undo } from 'prosemirror-history';
 import { getLinkRange } from '../../core/utils/get-link-range';
 import { LinkPopoverComponent } from "../link-popover/link-popover.component";
 import { EuclidesEditorSchema } from '../../engine/schema/euclides-schema';
+import { applyLink } from '../../engine/commanmethods/links/apply-link';
+import { removeLink } from '../../engine/commanmethods/links/remove-link';
 
 
 @Component({
@@ -39,6 +41,7 @@ export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
   }
 
   toggleBold() {
+    console.log(this.view)
     if (this.editorCommandsService.toggleBold(this.view)) {
 
       this.view.focus();
@@ -79,77 +82,28 @@ export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
       this.view.focus();
   }
 
-  showLinkPopover:boolean = false;
-  currentLink:string = '';
+  showLinkPopover = signal<boolean>(false);
+  currentLink: string = '';
 
   openLinkPopover() {
-    const { state } = this.view;
-
-    const linkInfo = getLinkRange(state);
-    this.currentLink = linkInfo?.link.attrs['href'] ?? '';
-    this.showLinkPopover = true;
+    this.showLinkPopover.set(true);
   }
 
   closePopover() {
-    this.showLinkPopover = false;
+    this.showLinkPopover.set(false);
   }
 
   applyLink(url: string) {
-    const { state, dispatch } = this.view;
-
-    const linkInfo = getLinkRange(state);
-
-    const href = url.startsWith('http')
-      ? url
-      : 'https://' + url;
-
-    if (linkInfo) {
-      const { start, end, link } = linkInfo;
-
-      dispatch(
-        state.tr
-          .removeMark(start, end, state.schema.marks['link'])
-          .addMark(
-            start,
-            end,
-            state.schema.marks['link'].create({
-              href,
-              title: link.attrs['title']
-            })
-          )
-      );
-    } else {
-      const from = state.selection.from;
-
-      const tr = state.tr.insertText(href, from);
-      tr.addMark(
-        from,
-        from + href.length,
-        state.schema.marks['link'].create({ href, title: href })
-      );
-
-      dispatch(tr);
+    if (applyLink(url, this.view)) {
+      this.view.focus();
+      this.closePopover()
     }
-
-    this.view.focus();
-    this.closePopover();
   }
 
   removeLink() {
-    const { state, dispatch } = this.view;
-    const linkInfo = getLinkRange(state);
-
-    if (!linkInfo) return;
-
-    dispatch(
-      state.tr.removeMark(
-        linkInfo.start,
-        linkInfo.end,
-        state.schema.marks['link']
-      )
-    );
-
+    removeLink(this.view);
     this.closePopover();
+    this.view.focus();
   }
 
   ngOnDestroy(): void {
