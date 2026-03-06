@@ -24,5 +24,6 @@ export class LinkPopoverComponent {
   onConfirm() {
     if (!this.url()) return;
     this.confirm.emit(this.url());
+    this.url.set('')
   }
 }

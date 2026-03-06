@@ -51,9 +51,9 @@ export const applyLink = (url: string, view: EditorView): boolean => {
     // 2. agrega uno nuevo con el href actualizado
     dispatch(
       state.tr.removeMark(start, end, linkMark).addMark(start, end, linkMark.create({
-        href, titlle: link.attrs['title']
+        href, title: link.attrs['title']
       }))
-    )
+    );
     return true
   }
 
@@ -69,15 +69,15 @@ export const applyLink = (url: string, view: EditorView): boolean => {
 
   // posición actual del cursor
   const from = state.selection.from;
-    // insertamos el texto del enlace en el documento
 
+  // insertamos el texto del enlace en el documento
   const tr = state.tr.insertText(href, from);
 
   // aplicamos el mark "link" al texto recién insertado
   tr.addMark(from, from + href.length, linkMark.create({
     href,
     title: href
-  })),
+  }))
   // enviamos la transacción al editor para actualizar el documento
   dispatch(tr);
   return true;

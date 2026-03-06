@@ -6,7 +6,6 @@ import { EditorEngine } from '../../engine/editor-engine';
 import { EditorStateService } from '../../core/editor-state.service';
 import { list } from '../../core/types/list.type';
 import { redo, undo } from 'prosemirror-history';
-import { getLinkRange } from '../../core/utils/get-link-range';
 import { LinkPopoverComponent } from "../link-popover/link-popover.component";
 import { EuclidesEditorSchema } from '../../engine/schema/euclides-schema';
 import { applyLink } from '../../engine/commanmethods/links/apply-link';
