@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, input, output } from '@angular/core';
 
 @Component({
   selector: 'heading-selector',
@@ -13,7 +13,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
         justify-content: center;
         align-items: center;
         position: absolute;
-        top: 3rem;
+        top: 2.2rem;
         z-index: 99;
         border-radius: .5rem;
         box-shadow: 0px 0px 10px -5px #808080d1;
@@ -22,11 +22,22 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
   `
 })
 export class HeadingSelectorComponent {
-
+    private el = inject(ElementRef)
     public visible = input<boolean>(false);
 
     headingSelected = output<number>();
-  
+    close = output<void>();
+
+    @HostListener('document:click', ['$event'])
+    onDocumentClick(event:MouseEvent){
+      if(!this.visible())return
+
+      const clickedInside = this.el.nativeElement.contains(event.target);
+      if(!clickedInside){
+       this.close.emit();
+      }
+    }
+
     onHead(level:number):void{
       this.headingSelected.emit(level);
     }

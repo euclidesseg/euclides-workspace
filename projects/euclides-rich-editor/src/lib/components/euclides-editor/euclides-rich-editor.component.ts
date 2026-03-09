@@ -13,6 +13,7 @@ import { EuclidesEditorSchema } from '../../engine/schema/euclides-schema';
 import { applyLink } from '../../engine/commanmethods/links/apply-link';
 import { removeLink } from '../../engine/commanmethods/links/remove-link';
 import { turnIntoHeading } from '../../engine/commanmethods/headers/turn-into-heading';
+import { getLinkRange } from '../../core/utils/links/get-link-range';
 
 
 @Component({
@@ -89,21 +90,36 @@ export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
   showLinkPopover = signal<boolean>(false);
   showHeadingSelector = signal<boolean>(false);
 
-  currentLink: string = '';
+  currentLink = signal<string>('');
 
-  showHeading(): void {
-    this.showHeadingSelector.update((val) => !val)
+
+  openHeading(){
+    this.showHeadingSelector.set(true);
+  }
+  closeHeading(){
+    this.showHeadingSelector.set(false);
   }
   onSetHead(level: number): void {
     const executed = this.editorCommandsService.toggleHeading(level, this.view);
     if (executed) {
       this.view.focus();
     }
-    this.showHeading();
+    this.closeHeading();
   }
 
   openLinkPopover() {
-    this.showLinkPopover.update(val => !val);
+    if (!this.showLinkPopover()) {
+
+      const linkInfo = getLinkRange(this.view.state);
+
+      if (linkInfo) {
+        this.currentLink.set(linkInfo.link.attrs['href']);
+      } else {
+        this.currentLink.set('');
+      }
+
+    }
+    this.showLinkPopover.set(true);
   }
 
   closePopover() {

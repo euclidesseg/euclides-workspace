@@ -175,7 +175,7 @@ body {
 
 .popover {
     position: absolute;
-    top: 45px;
+    top: 2.5em;
     max-height: 40px;
     left: 5px;
     background: white;

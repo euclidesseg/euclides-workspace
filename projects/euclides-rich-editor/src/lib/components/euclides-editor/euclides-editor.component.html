@@ -10,14 +10,14 @@
                 </svg>
             </button>
             <div id="heading-container">
-                <button class="btnHeading" id="btn-heading" (click)="showHeading()">
+                <button class="btnHeading" id="btn-heading" (click)="openHeading()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heading-icon lucide-heading"><path d="M6 12h12"/><path d="M6 20V4"/><path d="M18 20V4"/>
                     </svg>
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M12 14.708L6.692 9.4l.708-.708l4.6 4.6l4.6-4.6l.708.708z" />
                     </svg>
                 </button>
-                <heading-selector [visible] = "showHeadingSelector()"(headingSelected)="onSetHead($event)" />
+                <heading-selector [visible]="showHeadingSelector()" (headingSelected)="onSetHead($event)" (close)="closeHeading()" />
             </div>
             <button id="alignLeftBtn" #alignLeft (click)="toggleAlign('left')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-text-align-start-icon lucide-text-align-start"><path d="M21 5H3"/><path d="M15 12H3"/><path d="M17 19H3"/>
@@ -66,7 +66,7 @@
             <button #redoBtn id="redoBtn" [disabled]="!editorStateService.canRedo()" (click)="redo()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-redo2-icon lucide-redo-2"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13"/></svg>
             </button>
-            <app-link-popover [visible]="showLinkPopover()" [initialUrl]="currentLink" (confirm)="applyLink($event)"
+            <app-link-popover [visible]="showLinkPopover()" [initialUrl]="currentLink()" (confirm)="applyLink($event)"
                 (cancel)="closePopover()" (remove)="removeLink()">
             </app-link-popover>
 
