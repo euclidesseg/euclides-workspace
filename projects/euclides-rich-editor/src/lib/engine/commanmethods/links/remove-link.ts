@@ -27,7 +27,7 @@
  */
 
 import { EditorView } from "prosemirror-view";
-import { getLinkRange } from "../../../core/utils/get-link-range";
+import { getLinkRange } from "../../../core/utils/links/get-link-range";
 
 export const removeLink = (view: EditorView): boolean => {
   const { state, dispatch } = view;

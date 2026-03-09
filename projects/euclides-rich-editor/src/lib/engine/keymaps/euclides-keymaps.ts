@@ -4,6 +4,7 @@ import { undo, redo } from "prosemirror-history";
 import {splitListItem} from 'prosemirror-schema-list'
 import { Schema } from "prosemirror-model";
 import { EditorState, Plugin, Transaction } from "prosemirror-state";
+import { turnIntoCodeBlock } from "../commanmethods/blocks/code-block.command";
 
 export function buildEuclidesKeymap(schema:Schema):Plugin{
 
@@ -12,6 +13,7 @@ export function buildEuclidesKeymap(schema:Schema):Plugin{
         "Mod-i": toggleMark(schema.marks["em"]),
         "Mod-z": undo,
         "Mod-y": redo,
+        "Mod-Alt-c":turnIntoCodeBlock(),
     
         "Shift-Mod-z": redo, // Mac usa este comando
         "Shift-Enter": cmd,

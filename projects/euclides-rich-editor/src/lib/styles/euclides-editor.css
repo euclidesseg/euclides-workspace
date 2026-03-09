@@ -19,7 +19,6 @@ body {
     flex-direction: column;
     overflow: hidden;
     position: relative;
-    z-index: 10
 }
 
 .euclides-editor-nav button {
@@ -93,13 +92,12 @@ body {
     padding: .2rem .4rem;
     position: sticky;
     top: 0;
-    z-index: 10;
     background-color: white;
 }
 
 .buttons__container {
     display: flex;
-    overflow-x: auto;
+    gap: 2px;
 }
 
 .buttons__container::-webkit-scrollbar {
@@ -109,8 +107,19 @@ body {
 .euclides-editor-nav button {
     padding: .4rem;
     border-radius: 6px;
-    background-color: white;
     cursor: pointer;
+    background:none;
+    color: #1d293d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.euclides-editor-nav button:disabled {
+    color: #90a1b9;
+    opacity: 1;
+    cursor: auto;
+    background: none;
 }
 
 .euclides-editor-nav button:hover {
@@ -149,7 +158,6 @@ body {
     position: relative;
     width: auto;
     min-width: 35px;
-    z-index: 10;
 }
 
 #heading-options {
@@ -163,7 +171,6 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
     border-radius: .5rem;
     flex-direction: column;
-    z-index: 20;
 }
 
 .popover {
@@ -189,16 +196,24 @@ body {
     outline: none;
 }
 
-.actions button {
+.actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.actions .action {
     background: none;
     border: none;
     cursor: pointer;
-    color: slategray;
+    color: #1d293d;
+}
+.actions .action:disabled {
+    color: #90a1b9;
+    opacity: 1;
+    cursor: auto;
+    background: none;
 }
 
-.actions button:hover {
-    color: black;
-}
 
 @media (width < 520px) {
     .euclides-editor-nav {
@@ -218,5 +233,9 @@ body {
         top: auto;
         bottom: 40px;
         z-index: 99;
+    }
+
+    .buttons__container {
+        overflow-x: auto;
     }
 }

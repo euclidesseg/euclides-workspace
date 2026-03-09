@@ -1,22 +1,25 @@
-import { AfterViewInit, Component, ElementRef, inject, OnDestroy, signal, viewChild, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, signal, ViewChild } from '@angular/core';
 import { EditorView } from 'prosemirror-view';
+import { redo, undo } from 'prosemirror-history';
+
+import { LinkPopoverComponent } from "../link-popover/link-popover.component";
+import { HeadingSelectorComponent } from '../heading-selector/heading-selector.component';
 
 import { EditorCommandsService } from '../../core/editor-commands.service';
 import { EditorEngine } from '../../engine/editor-engine';
 import { EditorStateService } from '../../core/editor-state.service';
 import { list } from '../../core/types/list.type';
-import { redo, undo } from 'prosemirror-history';
-import { LinkPopoverComponent } from "../link-popover/link-popover.component";
 import { EuclidesEditorSchema } from '../../engine/schema/euclides-schema';
 import { applyLink } from '../../engine/commanmethods/links/apply-link';
 import { removeLink } from '../../engine/commanmethods/links/remove-link';
+import { turnIntoHeading } from '../../engine/commanmethods/headers/turn-into-heading';
 
 
 @Component({
   selector: 'euclides-rich-editor',
   standalone: true,
   templateUrl: './euclides-editor.component.html',
-  imports: [LinkPopoverComponent],
+  imports: [LinkPopoverComponent, HeadingSelectorComponent],
 })
 export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
 
@@ -81,11 +84,26 @@ export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
       this.view.focus();
   }
 
+
+  // Logica ventana de enlaces y encabezados
   showLinkPopover = signal<boolean>(false);
+  showHeadingSelector = signal<boolean>(false);
+
   currentLink: string = '';
 
+  showHeading(): void {
+    this.showHeadingSelector.update((val) => !val)
+  }
+  onSetHead(level: number): void {
+    const executed = this.editorCommandsService.toggleHeading(level, this.view);
+    if (executed) {
+      this.view.focus();
+    }
+    this.showHeading();
+  }
+
   openLinkPopover() {
-    this.showLinkPopover.set(true);
+    this.showLinkPopover.update(val => !val);
   }
 
   closePopover() {
@@ -111,9 +129,11 @@ export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
 }
 
 // TODO profundizar en el euclides-schema //in progress
-// TODO agrgar comportamientos // in progress
-// TODO agregar enter de listas 
+// TODO agrgar comportamientos // in progress 80%
 // TODO separar nav y editor en componentes separados
 // TODO Entender cómo funcionan las InputRules en ProseMirror y agregarlas a los plugins
 // TODO comprender la abstraccion de prosemirror
 // TODO Blockquote avanzado Un bloque tipo cita con atributo author
+
+
+//TODO para un futuro posibilidad de agregar enlace y texto diferente al enlace.

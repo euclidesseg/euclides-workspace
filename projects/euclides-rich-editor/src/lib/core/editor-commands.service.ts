@@ -5,8 +5,10 @@ import { setBlockType, toggleMark } from "prosemirror-commands";
 import { EuclidesEditorSchema } from "../engine/schema/euclides-schema";
 import { Command } from "prosemirror-state";
 import { list } from "./types/list.type";
+
 import { switchList } from "../engine/commanmethods/lists/switch-list.comand";
 import { turnIntoCodeBlock } from "../engine/commanmethods/blocks/code-block.command";
+import { turnIntoHeading } from "../engine/commanmethods/headers/turn-into-heading";
 
 @Injectable(
     { providedIn: 'root' },
@@ -34,17 +36,27 @@ export class EditorCommandsService {
         return setBlockType(EuclidesEditorSchema.nodes['paragraph'], { textAlign: align })(view.state, view.dispatch);
     }
 
-    toggleCodeBlock(view: EditorView): boolean {
-        return turnIntoCodeBlock(EuclidesEditorSchema)(view.state, view.dispatch);
+    toggleStrike(view: EditorView): boolean {
+        const command: Command = toggleMark(EuclidesEditorSchema.marks['strike'])
+        return command(view.state, view.dispatch)
     }
     
-    toggleStrike(view: EditorView):boolean {
-        const command:Command = toggleMark(EuclidesEditorSchema.marks['strike'])
-        return command(view.state, view.dispatch)   
+    toggleCodeBlock(view: EditorView): boolean {
+        const command:Command = turnIntoCodeBlock();
+        return command(view.state, view.dispatch);
     }
 
+
     toggleList(type: list, view: EditorView): boolean {
-       return switchList(EuclidesEditorSchema.nodes[type])(view.state, view.dispatch);
+        const command = switchList(EuclidesEditorSchema.nodes[type])
+        return command(view.state, view.dispatch);
+    }
+
+    toggleHeading(level: number, view: EditorView): boolean {
+        const tr = turnIntoHeading(level, view.state);
+        if (!tr) return false;
+        view.dispatch(tr);
+        return true;
     }
 
 }
