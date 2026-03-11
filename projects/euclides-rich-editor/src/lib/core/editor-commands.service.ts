@@ -32,17 +32,17 @@ export class EditorCommandsService {
         return command(view.state, view.dispatch)
     }
 
-    setTextAlign(align: string, view: EditorView): boolean {
-        return setBlockType(EuclidesEditorSchema.nodes['paragraph'], { textAlign: align })(view.state, view.dispatch);
-    }
 
     toggleStrike(view: EditorView): boolean {
         const command: Command = toggleMark(EuclidesEditorSchema.marks['strike'])
         return command(view.state, view.dispatch)
     }
-    
+
+    setTextAlign(align: string, view: EditorView): boolean {
+        return setBlockType(EuclidesEditorSchema.nodes['paragraph'], { textAlign: align })(view.state, view.dispatch);
+    }
     toggleCodeBlock(view: EditorView): boolean {
-        const command:Command = turnIntoCodeBlock();
+        const command: Command = turnIntoCodeBlock();
         return command(view.state, view.dispatch);
     }
 
@@ -56,6 +56,21 @@ export class EditorCommandsService {
         const tr = turnIntoHeading(level, view.state);
         if (!tr) return false;
         view.dispatch(tr);
+        return true;
+    }
+
+
+    toggleImage(view: EditorView, url: string) {
+        const { state, dispatch } = view;
+
+        const imageNode = EuclidesEditorSchema.nodes['image'].create({
+            src: url
+        });
+
+        const tr = state.tr.replaceSelectionWith(imageNode);
+
+        dispatch(tr.scrollIntoView());
+
         return true;
     }
 

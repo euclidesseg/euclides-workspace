@@ -93,10 +93,10 @@ export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
   currentLink = signal<string>('');
 
 
-  openHeading(){
+  openHeading() {
     this.showHeadingSelector.set(true);
   }
-  closeHeading(){
+  closeHeading() {
     this.showHeadingSelector.set(false);
   }
   onSetHead(level: number): void {
@@ -139,13 +139,23 @@ export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
     this.view.focus();
   }
 
+  addImage() {
+    const url = window.prompt()
+    if (url) {
+      if (this.editorCommandsService.toggleImage(this.view, url)) {
+        this.view.focus()
+      }
+    }
+    console.log('adding image')
+  }
+
   ngOnDestroy(): void {
     this.view.destroy();
   }
 }
 
 // TODO profundizar en el euclides-schema //in progress
-// TODO agrgar comportamientos // in progress 80%
+// TODO agrgar comportamientos // in progress 80% adding image
 // TODO separar nav y editor en componentes separados
 // TODO Entender cómo funcionan las InputRules en ProseMirror y agregarlas a los plugins
 // TODO comprender la abstraccion de prosemirror
