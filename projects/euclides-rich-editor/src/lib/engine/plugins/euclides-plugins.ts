@@ -3,7 +3,7 @@ import { baseKeymap} from 'prosemirror-commands';
 import { history } from 'prosemirror-history';
 import { EuclidesEditorSchema } from '../schema/euclides-schema';
 import { buildEuclidesKeymap } from '../keymaps/euclides-keymaps';
-import { EditorStateService } from '../../core/editor-state.service';
+import { EditorStateService } from '../../core/services/editor-state.service';
 import { buildHistoryStatePlugin } from './history-buttons.plugin';
 
 /*

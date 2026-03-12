@@ -32,7 +32,37 @@ const paragraph:NodeSpec = {
     ]
   }
 }
-
+const image:NodeSpec = {
+  inline:false,
+  group:'block',
+  draggable:true,
+  attrs:{
+    src:{},
+    alt:{default:null},
+    title:{default:null},
+    width:{default:'300px'}
+  },
+  parseDOM:[
+    {
+      tag:"img[src]",
+      getAttrs:(dom:HTMLElement) => {
+        return{
+          src:dom.getAttribute("src"),
+          width:dom.style.width || 'auto'
+        }
+      }
+    }
+  ],
+  toDOM(node:Node){
+    return[
+      "img",
+      {
+        src:node.attrs['src'],
+        style:`width:${node.attrs['width']}`
+      }
+    ]
+  }
+}
 // creamos el mark strike (tachado)
 const strike:MarkSpec = {
   parseDOM: [
@@ -44,7 +74,8 @@ const strike:MarkSpec = {
     return ["s", 0];
   }
 };
-const nodes = basicSchema.spec.nodes.update("paragraph", paragraph);
+const nodes = basicSchema.spec.nodes.update("paragraph", paragraph).update("image", image);
+
 
 export const EuclidesEditorSchema = new Schema({
   nodes: addListNodes(nodes, "paragraph block*", "block"),

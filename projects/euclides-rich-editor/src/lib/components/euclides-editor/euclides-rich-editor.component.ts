@@ -5,15 +5,16 @@ import { redo, undo } from 'prosemirror-history';
 import { LinkPopoverComponent } from "../link-popover/link-popover.component";
 import { HeadingSelectorComponent } from '../heading-selector/heading-selector.component';
 
-import { EditorCommandsService } from '../../core/editor-commands.service';
 import { EditorEngine } from '../../engine/editor-engine';
-import { EditorStateService } from '../../core/editor-state.service';
+import { EditorStateService } from '../../core/services/editor-state.service';
 import { list } from '../../core/types/list.type';
 import { EuclidesEditorSchema } from '../../engine/schema/euclides-schema';
 import { applyLink } from '../../engine/commanmethods/links/apply-link';
 import { removeLink } from '../../engine/commanmethods/links/remove-link';
 import { turnIntoHeading } from '../../engine/commanmethods/headers/turn-into-heading';
 import { getLinkRange } from '../../core/utils/links/get-link-range';
+import { EditorCommandsService } from '../../core/services/editor-commands.service';
+import { ImageSelectorService } from '../../core/services/image.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
 
   editorCommandsService = inject(EditorCommandsService);
   editorStateService = inject(EditorStateService)
+  imageSelectorService = inject(ImageSelectorService);
 
   // referencia para obtener el contenedor del editor
   @ViewChild('editor', { static: true })
@@ -140,13 +142,10 @@ export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
   }
 
   addImage() {
-    const url = window.prompt()
-    if (url) {
-      if (this.editorCommandsService.toggleImage(this.view, url)) {
-        this.view.focus()
-      }
-    }
-    console.log('adding image')
+   this.imageSelectorService.openImageSelector((image) =>{
+    this.editorCommandsService.addImage(this.view, image);
+    this.view.focus();
+   })
   }
 
   ngOnDestroy(): void {

@@ -1,6 +1,6 @@
 import { Plugin } from "prosemirror-state";
 import { undoDepth, redoDepth } from "prosemirror-history";
-import { EditorStateService } from "../../core/editor-state.service";
+import { EditorStateService } from "../../core/services/editor-state.service";
 
 export function buildHistoryStatePlugin(stateService: EditorStateService):Plugin {
 

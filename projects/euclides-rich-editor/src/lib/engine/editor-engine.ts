@@ -1,8 +1,9 @@
 import { EditorState } from "prosemirror-state";
 import { EditorView } from "prosemirror-view";
 import { EuclidesEditorSchema } from "./schema/euclides-schema";
-import { EditorStateService } from "../core/editor-state.service";
+import { EditorStateService } from "../core/services/editor-state.service";
 import { buildPlugins } from "./plugins/euclides-plugins";
+import { ImageNodeView } from "./nodeviews/image/image.nodeview";
 
 export class EditorEngine{
 
@@ -33,6 +34,10 @@ export class EditorEngine{
         })
         return new EditorView(element,{
             state,
+            nodeViews:{
+                image:(node,view,getPos) => new ImageNodeView(node, view,getPos)
+                
+            },
             attributes:{class: 'euclides-editor'}
         })
     }

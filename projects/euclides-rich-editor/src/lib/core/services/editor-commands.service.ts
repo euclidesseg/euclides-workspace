@@ -2,13 +2,13 @@ import { Injectable } from "@angular/core";
 import { EditorView } from "prosemirror-view";
 
 import { setBlockType, toggleMark } from "prosemirror-commands";
-import { EuclidesEditorSchema } from "../engine/schema/euclides-schema";
-import { Command } from "prosemirror-state";
-import { list } from "./types/list.type";
-
-import { switchList } from "../engine/commanmethods/lists/switch-list.comand";
-import { turnIntoCodeBlock } from "../engine/commanmethods/blocks/code-block.command";
-import { turnIntoHeading } from "../engine/commanmethods/headers/turn-into-heading";
+import { EuclidesEditorSchema } from "../../engine/schema/euclides-schema";
+import { Command, TextSelection } from "prosemirror-state";
+import { turnIntoCodeBlock } from "../../engine/commanmethods/blocks/code-block.command";
+import { switchList } from "../../engine/commanmethods/lists/switch-list.comand";
+import { turnIntoHeading } from "../../engine/commanmethods/headers/turn-into-heading";
+import { list } from "../types/list.type";
+import { insertImage } from "../../engine/commanmethods/image/insert-image.command";
 
 @Injectable(
     { providedIn: 'root' },
@@ -60,18 +60,9 @@ export class EditorCommandsService {
     }
 
 
-    toggleImage(view: EditorView, url: string) {
-        const { state, dispatch } = view;
-
-        const imageNode = EuclidesEditorSchema.nodes['image'].create({
-            src: url
-        });
-
-        const tr = state.tr.replaceSelectionWith(imageNode);
-
-        dispatch(tr.scrollIntoView());
-
-        return true;
+    addImage(view:EditorView, file:File){
+        const url = URL.createObjectURL(file);
+        return insertImage(view, url);
     }
 
 }
