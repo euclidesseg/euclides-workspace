@@ -11,7 +11,6 @@ import { list } from '../../core/types/list.type';
 import { EuclidesEditorSchema } from '../../engine/schema/euclides-schema';
 import { applyLink } from '../../engine/commanmethods/links/apply-link';
 import { removeLink } from '../../engine/commanmethods/links/remove-link';
-import { turnIntoHeading } from '../../engine/commanmethods/headers/turn-into-heading';
 import { getLinkRange } from '../../core/utils/links/get-link-range';
 import { EditorCommandsService } from '../../core/services/editor-commands.service';
 import { ImageSelectorService } from '../../core/services/image.service';
@@ -148,21 +147,24 @@ export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
    })
   }
 
+  getDoc(){
+    // console.log(EditorEngine.getDocumentJSON(this.view));
+    const content = EditorEngine.getContent(this.view);
+    console.log(content)
+  }
   ngOnDestroy(): void {
     this.view.destroy();
   }
 }
 
-// TODO profundizar en el euclides-schema //in progress
-// TODO agrgar comportamientos iniciales para primera version // in progress 90% adding image
-// TODO documentar las funciones que intervienen en agregar una imagen
-// TODO obtener el json del editor con los datos que se hallan escritos 
+// TODO agrgar comportamientos iniciales para primera version // in progress 95% adding image
+// TODO obtener el json del editor con los datos que se hallan escritos // in progress
 // TODO usar renderer2 de angular para anejo de DOM -- en la inegracion de la imagen
 // TODO separar nav y editor en componentes separados
-// TODO comprender la abstraccion de prosemirror
-// TODO solucionar problema con z-index image vs toolbar 
 
 //====**** Nota las tareas son indispensables para la primera version
+// TODO comprender la abstraccion de prosemirror
+// TODO profundizar en el euclides-schema //in progress
 // TODO Entender cómo funcionan las InputRules en ProseMirror y agregarlas a los plugins
 // TODO Blockquote avanzado Un bloque tipo cita con atributo author
 // TODO para un futuro posibilidad de agregar enlace y texto diferente al enlace.
