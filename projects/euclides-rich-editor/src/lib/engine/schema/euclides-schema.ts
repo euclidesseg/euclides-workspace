@@ -33,9 +33,13 @@ const paragraph:NodeSpec = {
   }
 }
 const image:NodeSpec = {
-  inline:false,
-  group:'block',
-  draggable:true,
+  inline: false,
+  group: "block",
+
+  atom: true,
+  selectable: true,
+  draggable: true,
+  isolating: true,
   attrs:{
     src:{},
     alt:{default:null},

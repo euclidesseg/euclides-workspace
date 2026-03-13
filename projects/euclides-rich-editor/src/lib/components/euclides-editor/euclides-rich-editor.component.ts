@@ -154,11 +154,16 @@ export class EuclidesRichEditorComponent implements AfterViewInit, OnDestroy {
 }
 
 // TODO profundizar en el euclides-schema //in progress
-// TODO agrgar comportamientos // in progress 80% adding image
+// TODO agrgar comportamientos iniciales para primera version // in progress 90% adding image
+// TODO documentar las funciones que intervienen en agregar una imagen
+// TODO obtener el json del editor con los datos que se hallan escritos 
+// TODO usar renderer2 de angular para anejo de DOM -- en la inegracion de la imagen
 // TODO separar nav y editor en componentes separados
-// TODO Entender cómo funcionan las InputRules en ProseMirror y agregarlas a los plugins
 // TODO comprender la abstraccion de prosemirror
+// TODO solucionar problema con z-index image vs toolbar 
+
+//====**** Nota las tareas son indispensables para la primera version
+// TODO Entender cómo funcionan las InputRules en ProseMirror y agregarlas a los plugins
 // TODO Blockquote avanzado Un bloque tipo cita con atributo author
+// TODO para un futuro posibilidad de agregar enlace y texto diferente al enlace.
 
-
-//TODO para un futuro posibilidad de agregar enlace y texto diferente al enlace.
